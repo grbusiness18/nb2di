@@ -1,3 +1,6 @@
+# Install
+pip install git+git://github.com/grbusiness18/nb2di.git#egg=nb2di
+
 # Prerequisites : 
 
 ### _Only in Local Environment set the following ENVIRONMENTAL Variables_.

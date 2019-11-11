@@ -1,4 +1,3 @@
-from .context import Context
 from .utility import PortKind, ContentType
 from sapdi.internal.modeler.port_info import PortInfo
 from .connections import ConnectionHandlerWithPort
@@ -33,8 +32,6 @@ class Ports(object):
 class PortContext(object):
     def __init__(self, operator, kind: PortKind):
         from .operator import Operator
-
-        # super().__init__()
         if not isinstance(operator, Operator):
             raise Exception("Invalid Operator Instance")
 

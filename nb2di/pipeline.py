@@ -5,8 +5,6 @@ from .utility import validate_di
 from .connections import ConnectionHandler
 from .template import ConnectionTemplateSourceToTarget
 
-#import re
-
 
 class Pipeline(Context):
     def __init__(self, operators: list=[], connections: list=[], name: str=None, desc: str=None, template=None):
@@ -54,7 +52,6 @@ class Pipeline(Context):
     def add_operators(self):
         for op in self.__operators:
             self.get_graph().add_operator(op.operator)
-        #self.save()
 
     @validate_di
     def add_connections(self):
@@ -79,8 +76,3 @@ class Pipeline(Context):
                 gen_name = gen_name.format(0)
 
             return gen_name
-
-
-
-
-

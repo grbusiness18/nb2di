@@ -1,6 +1,6 @@
 from .utility import PortKind, ContentType
-#from .port import Port
 import nb2di.port as nb
+
 
 class ConnectionTemplateSourceToTarget:
     def __init__(self, src: nb.Port, tgt: nb.Port):

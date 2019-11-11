@@ -1,9 +1,8 @@
 from .context import Context
 from .utility import PortKind
-from .template import PortTemplate, ConnectionTemplate
+from .template import PortTemplate
 from jq import jq
 import re
-from .utility import validate_di
 from .port import Ports
 
 
@@ -48,9 +47,7 @@ class Operator(Context):
             raise Exception("Invalid Operator {} instance name".format(self.instance_id))
 
     def validate_component_name(self):
-        # validate name of operators
         rex = re.compile(r'.*' + self.component_name, re.IGNORECASE)
-        # print(self.DIGraph.graph.operator_names)
         if len(list(filter(rex.match, self.get_operator_names()))) == 0:
             raise Exception("Invalid Component Name of Operator")
 
@@ -123,8 +120,6 @@ class Operator(Context):
             code = code + '\n' + callback_code
 
         self.get_graph().operators[self.operator.instance_name].config['script'] = code
-        #print("Src Code", self.operator.instance_name, '\n', code)
-        #print(self.get_graph().operators[self.operator.instance_name].config['script'])
 
     def get_connections(self):
         g = self.get_graph().to_json()

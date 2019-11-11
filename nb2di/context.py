@@ -51,8 +51,6 @@ class Context:
         return list(self.get_graph().to_json()['processes'].keys())
 
     def save_graph(self, fetch_graph: bool=False, execute_graph: bool=False):
-       # print("save")
-       # print(self.di_context.get_graph().to_json())
         self.di_context.get_graph(fetch_graph).save()
         if execute_graph:
             self.execute()

@@ -10,26 +10,22 @@ import inspect
 
 class ApiLog(object):
     def __init__(self):
-        self.info = lambda *args, **kwargs: print("Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
-        self.warn = lambda *args, **kwargs: print("Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
-        self.error = lambda *args, **kwargs: print("Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
-        self.debug = lambda *args, **kwargs: print("Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
+        self.info = lambda *args, **kwargs: print("Info: Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
+        self.warn = lambda *args, **kwargs: print("Warn: Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
+        self.error = lambda *args, **kwargs: print("Error: Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
+        self.debug = lambda *args, **kwargs: print("Debug: Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
 
 
 class Api(Context):
     def __init__(self):
         super().__init__()
-        self.send = lambda *args, **kwargs: print("Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
-        self.Message = lambda *args, **kwargs: print("Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
+        self.send = lambda *args, **kwargs: print("Send: Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
+        self.Message = lambda *args, **kwargs: print("Message: Arguments {} \nKeyed-Arguments {}".format(args, kwargs))
         self.logger = ApiLog()
 
     def operator(self, instance_id: str=None, component_name: str=None, ports: list=[]):
         def wrapper(fn):
             def inner_wrapper(*args, **kwargs):
-                #print("instance_id: ", instance_id)
-                #print("component_name: ", component_name)
-                #print("ports", ports)
-
                 code = inspect.getsource(fn).split('\n', 1)[1]
                 fn_name = fn.__name__
                 if not self.get_di_mode():
