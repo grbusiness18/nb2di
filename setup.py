@@ -1,16 +1,21 @@
 import setuptools
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+
+
+def get_version():
+    with open('version.txt') as ver_file:
+        version_str = ver_file.readline().rstrip()
+    return version_str
+
 
 setuptools.setup(
     name="nb2di",
-    version='0.0.1',
+    version=get_version(),
     author="Gokulraj Ramdass",
     author_email="gokulraj.ramdass@sap.com",
     description="Notebook to DI",
-    long_description=long_description,
+    long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/grbusiness18/dinb",
+    url="https://github.com/grbusiness18/nb2di",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

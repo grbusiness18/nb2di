@@ -50,9 +50,13 @@ class DiManager(object):
             self.set_scenario_by_id(os.environ['DI_SCENARIO_ID'])
             di.set_current_scenario(self.SCENARIO)
             log.warning("Current Scenario : {}".format(self.SCENARIO.name))
+        else:
+            raise Exception("Scenario can't be EMPTY. Use Env.Variable DI_SCENARIO_ID to set it.")
 
         if 'DI_PIPELINE_ID' in os.environ:
             self.set_pipeline_by_id(pipeline_id=os.environ['DI_PIPELINE_ID'])
+        else:
+            log.warning("Please Set/Create Pipeline ID.")
 
     def set_defaults(self):
         self.set_model_manager()
@@ -78,7 +82,7 @@ class DiManager(object):
             raise Exception("Invalid Pipeline")
         self.GRAPH = DIClient.getInstance().getModelerManager().find_graph("{}".format("com.sap.dsp." + self.PIPELINE.id))
         #print(traceback.print_stack())
-        print("Graph Set {}".format(time.time() - start))
+        print("Current DI Pipeline Set {}".format(time.time() - start))
 
     def set_scenario(self, scenario: Scenario):
         if not isinstance(scenario, Scenario):
@@ -143,20 +147,23 @@ class DiManager(object):
 
     def execute(self):
         pipeline = self.get_current_pipeline()
-        try:
-            version = self.DI.create_version()
-            desc = "Generated Conf {}".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
-            conf = di.scenario.Configuration.create(desc, [], pipeline, version)
-            pipeline.execute(conf)
-        except:
-            log.error("Unable to Execute Pipeline: {} . Error Occurred".format(pipeline.id))
+        #try:
+        version = di.create_version()
+        print(pipeline, version)
+        desc = "Generated Conf {}".format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+        print(desc)
+        conf = di.scenario.Configuration.create(desc, [], pipeline, version)
+        print(conf)
+        pipeline.execute(conf)
+        #except:
+         #   print("Unable to Execute Pipeline: {} . Error Occurred".format(pipeline.id))
 
-    def set_di_mode_on(self):
+    def set_di_mode_on(self, ignore_validation: bool=False):
         log.warning("Setting DI Mode to ON")
-        log.warning("Current Pipeline '{}'".format(self.get_current_pipeline().name))
-        if self.PIPELINE is None:
+        if not ignore_validation and self.PIPELINE is None:
             raise Exception('Pipeline is invalid/Empty. Please set the pipeline')
         self.DI_MODE = True
+        # log.warning("Current Pipeline '{}'".format(self.get_current_pipeline().name))
 
     def set_di_mode_off(self):
         self.DI_MODE = False

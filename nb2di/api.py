@@ -38,7 +38,7 @@ class Api(Context):
                 else:
                     opr = Operator(instance_id=instance_id, component_name=component_name, create_ports=ports)
                     opr.add_code_to_operator(code, fn_name)
-                    opr.save()
+                    opr.save_graph()
             return inner_wrapper
         return wrapper
 
@@ -46,7 +46,7 @@ class Api(Context):
     def add_port_to_operator(self, instance_id: str, ports: list=[]):
         opr = Operator(instance_id=instance_id)
         opr.create_new_ports(ports=ports)
-        opr.save()
+        opr.save_graph()
 
     @validate_di
     def add_connections_to_port(self, connections: list=[]):
@@ -55,21 +55,15 @@ class Api(Context):
                 raise Exception("Invalid Connection Instances")
             ch = ConnectionHandler(c.src, c.tgt)
             ch.add_connections()
-            ch.save()
+            ch.save_graph()
 
-    @validate_di
     def create_pipeline(self, name: str=None, desc: str=None, template: str=None):
+        self.set_di_mode_on(ignore_validation=True)
         p = Pipeline(name=name, desc=desc, template=template)
         return p.pipeline_id
 
     @validate_di
-    def create_pipeline_with_operators(self, operators: list = [], connections: list=[], name: str = None, desc: str = None,
-                                       template: str = None):
-        p = Pipeline(operators=operators, connections=connections, name=name, desc=desc, template=template)
-        return p.pipeline_id
-
-    @validate_di
-    def get_operator_name(self, name: str = None):
+    def get_operator_component_name(self, name: str = None):
         return self.get_operator_names(name)
 
     @validate_di
@@ -79,12 +73,12 @@ class Api(Context):
     @validate_di
     def get_current_pipeline_id(self):
         pipeline = self.get_pipeline()
-        return pipeline.id
+        return pipeline.id, pipeline.name
 
-    @validate_di
+   # @validate_di
     def set_pipeline_by_id(self, value: str):
         pipeline = self.set_pipeline_byid(value)
-        return pipeline.id
+        return pipeline.id, pipeline.name
 
     @validate_di
     def get_pipeline_operator_list(self):

@@ -1,4 +1,5 @@
 .idea/*
+.env
 build/
 dist/
 nb2opr.egg-info/

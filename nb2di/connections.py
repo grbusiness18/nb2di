@@ -11,22 +11,20 @@ class ConnectionHandlerWithPort(Context):
             raise Exception("Invalid Port Instance")
         self.source_port = port
 
-    def add_connections(self, connections: []):
-        from .template import ConnectionTemplate
-        for c in connections:
-            if not isinstance(c, ConnectionTemplate):
-                raise Exception("Invalid connection instance")
-            g = self.get_graph()
-            g.add_connection(self.source_port.port_context.operator.operator,
-                             self.source_port.name, c.target_port.port_context.operator.operator, c.target_port.name)
+    def add_connection(self, p: object):
+        from .port import Port
+        if not isinstance(p, Port):
+            raise Exception("Invalid connection instance")
+        g = self.get_graph()
+        g.add_connection(self.source_port.port_context.operator.operator,
+                         self.source_port.name, p.port_context.operator.operator, p.name)
 
-    def delete_connections(self, connections: []):
-        from .template import ConnectionTemplate
-        for c in connections:
-            if not isinstance(c, ConnectionTemplate):
-                raise Exception("Invalid connection instance")
-            g = self.get_graph()
-            g.delete_connection(self.source_port.port_context.operator.operator, self.source_port.name, c.target_port.operator.operator, c.target_port.name)
+    def delete_connection(self, p: object):
+        from .port import Port
+        if not isinstance(p, Port):
+            raise Exception("Invalid connection instance")
+        g = self.get_graph()
+        g.delete_connection(self.source_port.port_context.operator.operator, self.source_port.name, p.port_context.operator.operator, p.target_port.name)
 
     def get_connections(self):
         g = self.get_graph().to_json()

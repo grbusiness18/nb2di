@@ -23,7 +23,7 @@ class PortTemplate:
     def __init__(self, name: str, kind: PortKind=None, content_type: ContentType=None, target: ConnectionTemplate=None):
         self.name = name
         self.kind = kind
-        if content_type is not None and isinstance(content_type, ContentType):
+        if content_type is not None and not isinstance(content_type, ContentType):
             raise Exception("Invalid Argument Type for ContentType")
 
         if target is not None and not isinstance(target, ConnectionTemplate):

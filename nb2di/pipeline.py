@@ -48,7 +48,7 @@ class Pipeline(Context):
         self.set_pipeline_byid(pipeline.id)
         self.add_operators()
         self.add_connections()
-        self.save()
+        self.save_graph()
 
     @validate_di
     def add_operators(self):
@@ -75,8 +75,10 @@ class Pipeline(Context):
                 if gen_name.format(i + 1) not in names:
                     gen_name = gen_name.format(i + 1)
                     break
+            else:
+                gen_name = gen_name.format(0)
 
-            return gen_name.format(i + 1)
+            return gen_name
 
 
 
