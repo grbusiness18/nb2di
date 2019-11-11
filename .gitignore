@@ -2,6 +2,6 @@
 .env
 build/
 dist/
-nb2opr.egg-info/
+nb2di.egg-info/
 nb2di/__pycache__/
 tests/__pycache__/
